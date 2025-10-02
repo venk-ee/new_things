@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice Bot Demo</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+        #question, #answer { width: 100%; margin: 10px 0; }
+        button { padding: 10px 20px; font-size: 1em; }
+    </style>
+</head>
+<body>
+    <h2>Ask the Voice Bot</h2>
+    <p>Type your question or click <b>🎤 Speak</b> to use your voice.<br>
+    After speaking, click <b>Ask Bot</b> to get an answer.</p>
+    <div>
+        <label for="question">Your question:</label>
+        <input type="text" id="question" placeholder="Type your question here" style="width:100%;">
+        <button id="voiceBtn">🎤 Speak</button>
+    </div>
+    <div>
+        <button id="askBtn">Ask Bot</button>
+    </div>
+    <div>
+        <label for="answer">Bot's answer:</label>
+        <textarea id="answer" rows="3" readonly style="width:100%;"></textarea>
+    </div>
+    <div>
+        <button id="speakAnswerBtn">🔊 Speak Answer</button>
+    </div>
+    <script>
+    const askBtn = document.getElementById('askBtn');
+    const questionInput = document.getElementById('question');
+    const answerBox = document.getElementById('answer');
+    const speakAnswerBtn = document.getElementById('speakAnswerBtn');
+    const voiceBtn = document.getElementById('voiceBtn');
+
+    // Voice input using browser SpeechRecognition
+    let recognition;
+    if ('webkitSpeechRecognition' in window) {
+        recognition = new webkitSpeechRecognition();
+    } else if ('SpeechRecognition' in window) {
+        recognition = new SpeechRecognition();
+    }
+    if (recognition) {
+        recognition.lang = 'en-US';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        voiceBtn.onclick = () => {
+            voiceBtn.textContent = 'Listening...';
+            recognition.start();
+        };
+        recognition.onstart = () => {
+            voiceBtn.textContent = 'Listening...';
+        };
+        recognition.onend = () => {
+            voiceBtn.textContent = '🎤 Speak';
+        };
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            questionInput.value = transcript;
+        };
+        recognition.onerror = (event) => {
+            voiceBtn.textContent = '🎤 Speak';
+            let msg = 'Voice input error.';
+            if (event.error === 'not-allowed') {
+                msg = 'Microphone access denied. Please allow microphone permissions.';
+            } else if (event.error === 'no-speech') {
+                msg = 'No speech detected. Please try again.';
+            }
+            alert(msg);
+        };
+    } else {
+        voiceBtn.disabled = true;
+        voiceBtn.textContent = 'Voice not supported';
+        alert('Speech recognition is not supported in your browser.');
+    }
+
+    askBtn.onclick = () => {
+        const question = questionInput.value.trim();
+        if (!question) return;
+        answerBox.value = 'Thinking...';
+        fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+        })
+        .then(res => res.json())
+        .then(data => {
+            answerBox.value = data.answer || 'Sorry, I could not get a response.';
+        })
+        .catch(() => {
+            answerBox.value = 'Sorry, I could not get a response.';
+        });
+    };
+
+    speakAnswerBtn.onclick = () => {
+        const answer = answerBox.value;
+        if (!answer) return;
+        if (!('speechSynthesis' in window)) {
+            alert('Speech synthesis is not supported in your browser.');
+            return;
+        }
+        // Stop any ongoing speech
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(answer);
+        utter.lang = 'en-US';
+        window.speechSynthesis.speak(utter);
+    };
+    </script>
+</body>
+</html>
