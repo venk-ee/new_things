@@ -2,67 +2,49 @@
 #include <string>
 using namespace std;
 
-class Phone{
-    string _name="";
-    string _os="";
-    int _price=0;
+class Man{
+    string _name;
+    int _age;
+    Man(){}
+protected:
+    Man(const string & name,const int &age)
+    : _name(name),_age(age){}
+    void run(){puts("i can run");}
+    int getAge(){return _age;}
 
 public:
-    Phone();//default constructor
-    Phone(const string & name,const string & os,const int & price);//primary constructor
-    Phone(const Phone &);//cpopy constructor
-    string  getName(){return _os;}
-    int getPrice();
-    ~Phone();//destructor
-
-
+    void sayName()const;
 
 };
 
-int Phone::getPrice(){
-    printf("value of get price is %p\n",this);
-    return _price;
-
+void Man::sayName()const{
+    cout << "my name is :" <<_name << " my age is "<<_age <<endl;
 }
 
+class Superman:public Man{
+    bool flight;
+public:
+    Superman(string name):Man(name,26){};
+    void run(){puts("i can run at light speed");}
+};
 
-Phone::Phone() :_name(),_os("momm"),_price(){
-    puts("default constructor");
-}
+class Spiderman:public Man{
+    bool webbing;
 
-Phone::Phone(const string & name,const string & os,const int & price): _name(name),_os(os), _price(price)
-        {
-            puts("this is a parameter constructor");
-
-        }
-
-Phone::Phone(const Phone & values){
-    puts ("this is to over ride copy constructor");
-    _name=values._name;
-    _os="skinned-"+values._os;
-    _price=values._price;
-
-}
-
-Phone::~Phone(){
-    printf("destructor called for %s\n",_name.c_str());
-}
-
+public:
+    Spiderman(string name):Man(name,19){}
+    void run(){puts("i can run at normal speed ");}
+};
 
 int main(){
 
-    Phone apple;
-    cout<<apple.getName()<<endl;
+    Superman clark("kent");
+    clark.sayName();
+    clark.run();
 
-    Phone oneplus("OP8","android",799);
-
-
-    printf("value of object is %p\n",&oneplus);
-
-    cout<<oneplus.getPrice()<<endl;
-
-    Phone mi=oneplus;
-    cout << mi.getName() <<endl;
+    Spiderman perter("perter");
+    perter.sayName();
+    perter.run();
 
 
     return 0;
