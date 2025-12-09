@@ -2,51 +2,37 @@
 #include <string>
 using namespace std;
 
-class Man{
-    string _name;
-    int _age;
-    Man(){}
-protected:
-    Man(const string & name,const int &age)
-    : _name(name),_age(age){}
-    void run(){puts("i can run");}
-    int getAge(){return _age;}
-
+class one{
 public:
-    void sayName()const;
+    virtual void intro(){
+        cout<<"i am one\n";
+    }
 
 };
 
-void Man::sayName()const{
-    cout << "my name is :" <<_name << " my age is "<<_age <<endl;
-}
-
-class Superman:public Man{
-    bool flight;
-public:
-    Superman(string name):Man(name,26){};
-    void run(){puts("i can run at light speed");}
+class two:public one{
+    public:
+        void intro(){
+            cout <<"i am two"<<endl;
+        }
 };
-
-class Spiderman:public Man{
-    bool webbing;
-
-public:
-    Spiderman(string name):Man(name,19){}
-    void run(){puts("i can run at normal speed ");}
+class three:public one{
+    public:
+        void intro(){
+            cout <<"i am three"<<endl;
+        }
 };
 
 int main(){
 
-    Superman clark("kent");
-    clark.sayName();
-    clark.run();
+    one *a;
+    two b;
+    three c;
 
-    Spiderman perter("perter");
-    perter.sayName();
-    perter.run();
-
-
+    a=&b;
+    a->intro();
+    a=&c;
+    a->intro();
     return 0;
 
 
