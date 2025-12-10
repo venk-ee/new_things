@@ -1,40 +1,38 @@
 #include <iostream>
 #include <string>
+#include <memory>
 using namespace std;
 
-class one{
+class user{
 public:
-    virtual void intro(){
-        cout<<"i am one\n";
+    user(){
+        cout<<"user created\n";
+    }
+    ~user(){
+        cout<<"user destroyed\n";
     }
 
+    void testfun(){
+        cout<<"i am s test function\n";
+    }
 };
 
-class two:public one{
-    public:
-        void intro(){
-            cout <<"i am two"<<endl;
-        }
-};
-class three:public one{
-    public:
-        void intro(){
-            cout <<"i am three"<<endl;
-        }
-};
+
+
 
 int main(){
 
-    one *a;
-    two b;
-    three c;
+    {
 
-    a=&b;
-    a->intro();
-    a=&c;
-    a->intro();
+    // uniqur_ptr<user> sam=make_unique<user>(); // not allowed 
+        unique_ptr<user> sam = make_unique<user>();
+
+        sam->testfun();
+
+    }
+
+    cout <<"outside the scope\n";
+    
     return 0;
-
-
 }
 
