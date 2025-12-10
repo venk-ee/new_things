@@ -3,41 +3,22 @@
 #include <memory>
 using namespace std;
 
-class user{
-public:
-    user(){
-        cout<<"user created\n";
-    }
-    ~user(){
-        cout<<"user destroyed\n";
-    }
-
-    void testfun(){
-        cout<<"i am s test function\n";
-    }
-};
+void swap(int&a,int&b){
+    int temp=move(a);
+    a=move(b);
+    b=move(temp);
+}
 
 
 
 
 int main(){
 
-    {
+    int a=3;
+    int b=4;
+    swap(a,b);
+    cout<<a<<endl;
 
-    // uniqur_ptr<user> sam=make_unique<user>(); // not allowed 
-        unique_ptr<user> sam = make_unique<user>();
-
-        sam->testfun();
-
-    }
-
-    cout <<"outside the scope\n";
-
-    {
-        shared_ptr<user> tim=make_shared<user>();
-        shared_ptr<user> timm =timm;
-    }
-    
     return 0;
 }
 
