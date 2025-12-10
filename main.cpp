@@ -2,43 +2,33 @@
 #include <string>
 // #include<vector>
 
-constexpr int maxbuffer=1024;
 using namespace std;
 
+class MyFloat{
+    float ft;
+
+public:
+    MyFloat(){
+        ft=0.1;
+    }
+
+    void getvalue(){
+        cout<<ft<<endl;
+    }
+
+    void operator ()(float v){
+        ft+=v;
+    }
+};
 
 int main(){
 
-    static const char * originalfile="originalfile.txt";
-    const char* informatin="Caroline, don't go into the light ";
+    MyFloat floaty;
+    floaty.getvalue();
 
-    // std::FILE * fh=fopen(originalfile,"a");
-
-    // // fclose(fh);
-
-    // cout<<"file closed"<<endl;
-    
-    
-    // for (int i=0;i<50;++i){
-    //     fputs(informatin,fh);
-    // }
-    // fclose(fh);
-
-    char buff[maxbuffer];
-
-    FILE  * fh =fopen(originalfile,"r");
-    while (fgets(buff,maxbuffer,fh)){
-        fputs(buff,stdout);
-        
-    }
-    fclose(fh);
-
-
-
-    // remove(originalfile);
+    floaty(1.0);
+    floaty.getvalue();
 
 
     return 0;
 }
-
-
-
