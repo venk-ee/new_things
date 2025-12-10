@@ -1,24 +1,42 @@
 #include <iostream>
 #include <string>
-#include <memory>
+#include<vector>
+
 using namespace std;
 
-void swap(int&a,int&b){
-    int temp=move(a);
-    a=move(b);
-    b=move(temp);
+struct corners{
+    float a,b,c,d;
+};
+
+
+ostream& operator<<(ostream& stream,const corners& corners){
+    stream << corners.a<<""<<corners.b<<""<<corners.c<<""<<corners.d<<endl;
 }
-
-
 
 
 int main(){
 
-    int a=3;
-    int b=4;
-    swap(a,b);
-    cout<<a<<endl;
+    vector<int> inty;
+    inty.push_back(2);
+    inty.push_back(3);
 
-    return 0;
+    for (auto i=inty.begin();i!=inty.end();++i){
+        cout<< *i<<endl;
+    }
+
+    for (auto i=inty.begin();i!=inty.end();++i){
+        cout<< *i<<endl;
+    }
+
+    vector <corners> corners;
+
+    corners.push_back({1,2,3,4});
+    corners.push_back({5,6,7,8});
+
+    for (int i=0;i< corners.size();++i){
+        cout<<corners[i]<<endl;     
+    }
+
+
 }
 
