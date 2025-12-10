@@ -32,6 +32,11 @@ int main(){
     }
 
     cout <<"outside the scope\n";
+
+    {
+        shared_ptr<user> tim=make_shared<user>();
+        shared_ptr<user> timm =timm;
+    }
     
     return 0;
 }
