@@ -1,34 +1,35 @@
 #include <iostream>
 #include <string>
 // #include<vector>
+#include <algorithm>
 
 using namespace std;
 
-class MyFloat{
-    float ft;
 
-public:
-    MyFloat(){
-        ft=0.1;
-    }
-
-    void getvalue(){
-        cout<<ft<<endl;
-    }
-
-    void operator ()(float v){
-        ft+=v;
-    }
-};
 
 int main(){
 
-    MyFloat floaty;
-    floaty.getvalue();
+    int numbers[6]={3,2,6,5,7,8};
 
-    floaty(1.0);
-    floaty.getvalue();
+    cout<< "unsorted values: "<<endl;
+    for(int n:numbers){
+        cout<<n<<""<<endl;
+    }
 
+
+    sort(numbers,numbers+6);
+
+    if (binary_search(numbers,numbers+6,7)){
+        cout<<"number found"<<endl;
+    }else{
+        cout<<"number not found" <<endl;
+    }
+
+
+    cout<<"sorted value : "<<endl;
+    for(int n:numbers){
+        cout<<n<<" "<<endl;
+    }
 
     return 0;
 }
