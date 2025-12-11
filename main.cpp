@@ -1,35 +1,32 @@
-#include <iostream>
-#include <string>
+// #include <iostream>
+// #include <string>
 // #include<vector>
-#include <algorithm>
+// #include <algorithm>
 
-using namespace std;
+// using namespace std;
 
-
-
-int main(){
-
-    int numbers[6]={3,2,6,5,7,8};
-
-    cout<< "unsorted values: "<<endl;
-    for(int n:numbers){
-        cout<<n<<""<<endl;
-    }
+// struct Person
+// {
+//     char name[64];
+//     int age;
+// };
 
 
-    sort(numbers,numbers+6);
 
-    if (binary_search(numbers,numbers+6,7)){
-        cout<<"number found"<<endl;
-    }else{
-        cout<<"number not found" <<endl;
-    }
+// int main(int argc,char *argv[] ){
+
+//     struct Person people[100];
+//     struct  Person *p_Person=&people;
+
+//     int i=0;
+//     for (i=0;i<100,i++)
+//     {
+//         p_Person->age=0;
+
+//         p_Person +=sizeof(struct Person);
+//     }
+//     return 0;
+// }
 
 
-    cout<<"sorted value : "<<endl;
-    for(int n:numbers){
-        cout<<n<<" "<<endl;
-    }
-
-    return 0;
-}
+// // https://www.youtube.com/watch?v=q24-QTbKQS8
