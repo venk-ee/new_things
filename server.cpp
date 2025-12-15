@@ -68,7 +68,7 @@ int main(){
                 return 1;
             }else if (bytes_recived==0)
             {
-                std::cout<<"client at"<<client_ip <<";" <<remote_port<<"has connected ."<< std::endl;
+                std::cout<<"client at "<<client_ip <<";" <<remote_port<<" has connected ."<< std::endl;
                 break;
             }
             if (buffer[BUFFLEN-1]=='\n')
