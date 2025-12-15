@@ -6,7 +6,7 @@
 
 int main(){
 
-    const char *socket_port="9999";
+    const char *socket_port="9998";
 
     int port=atoi(socket_port);
 
@@ -40,42 +40,53 @@ int main(){
     memset(&remote_address,0,sizeof(remote_address));
     socklen_t remote_addresslen=sizeof(remote_address);
 
-    puts("waiting for new connection\n");
-
-    int client_socket=accept(sockket,(struct sockaddr *)&remote_address,&remote_addresslen);
-    
-    std::string client_ip=inet_ntoa(remote_address.sin_addr);
-
-    int remote_port=ntohs(remote_address.sin_port);
-
-    int BUFFLEN=1024;
-    char buffer[BUFFLEN];\
-
     while (true)
     {
-        memset(buffer,0,BUFFLEN);
 
-        int bytes_recived=recv(client_socket,buffer,BUFFLEN-1,0);
-        if (bytes_recived<0)
-        {
-           
-            perror("could not recive");
-            return 1;
-        }else if (bytes_recived==0)
-        {
-            std::cout<<"client at"<<client_ip <<";" <<remote_port<<"has connected ."<< std::endl;
-            break;
-        }
-        if (buffer[BUFFLEN-1]=='\n')
-        {
-            buffer[BUFFLEN-1]=0;
-        }
+        puts("waiting for new connection\n");
+
+        int client_socket=accept(sockket,(struct sockaddr *)&remote_address,&remote_addresslen);
         
-        std::cout <<"client message: \" " <<buffer << "\"" <<std::endl;
+        std::string client_ip=inet_ntoa(remote_address.sin_addr);
 
-    }
+        int remote_port=ntohs(remote_address.sin_port);
+
+        int BUFFLEN=1024;
+        char buffer[BUFFLEN];\
     
-    std::cout<<"shutting down"<<std::endl;
-    shutdown(client_socket,SHUT_RDWR);
+    
+
+        while (true)
+        {
+            memset(buffer,0,BUFFLEN);
+
+            int bytes_recived=recv(client_socket,buffer,BUFFLEN-1,0);
+            if (bytes_recived<0)
+            {
+            
+                perror("could not recive");
+                return 1;
+            }else if (bytes_recived==0)
+            {
+                std::cout<<"client at"<<client_ip <<";" <<remote_port<<"has connected ."<< std::endl;
+                break;
+            }
+            if (buffer[BUFFLEN-1]=='\n')
+            {
+                buffer[BUFFLEN-1]=0;
+            }
+            
+            std::cout <<"client message: \" " <<buffer << "\"" <<std::endl;
+            
+            std::string response ="hello client at" ;
+
+            int bytes_send=send(client_socket,response.c_str(),response.length(),0);
+
+        }
+    // std::cout<<"shutting down"<<std::endl;
+    // shutdown(client_socket,SHUT_RDWR);
+        
+        
+    }
 
 }
