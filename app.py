@@ -4,38 +4,43 @@ import os
 
 app = Flask(__name__)
 
-
 # Use OpenRouter API for LLM responses
-OPENROUTER_API_KEY = "REMOVED_SECRET"
+OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-def ask_llm(question):
+def ask_llm(question, api_key=None, model=None, image_data=None):
+    key_to_use = api_key if api_key else OPENROUTER_API_KEY
+    if not key_to_use:
+        return "Error: No API key provided. Please add your OpenRouter API key in Settings."
+    model_to_use = model if model else "openai/gpt-3.5-turbo"
     headers = {
-        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Authorization": f"Bearer {key_to_use}",
         "Content-Type": "application/json"
     }
+    
+    # Build user message content
+    if image_data:
+        user_content = [
+            {"type": "text", "text": question if question else "What's in this image?"},
+            {"type": "image_url", "image_url": {"url": image_data}}
+        ]
+    else:
+        user_content = question
+    
     payload = {
-        "model": "openai/gpt-3.5-turbo",
+        "model": model_to_use,
         "messages": [
             {
                 "role": "system",
-                "content": (
-                    "You are venkkee, a helpful AI assistant. "
-                    "Answer all questions as if you are an engineer who loves learning new things and enjoys building things from the ground up. "
-                    "Your #1 superpower is working well on your own and taking full responsibility for your mistakes. "
-                    "The top 3 areas you'd like to grow in are AI & Machine Learning, Web Development, and Life in general. "
-                    "Your coworkers think you’re just a kid because you’re 2–3 years younger than them, even though you work at the same level. "
-                    "You push your boundaries by focusing on the benefits you’ll get from completing the task—it keeps you motivated. "
-                    # "Always answer in the format: Q: [question] A: [answer]."
-                )
+                "content": "You are venkkee, a helpful AI assistant."
             },
-            {"role": "user", "content": question}
+            {"role": "user", "content": user_content}
         ],
-        "max_tokens": 256,
+        "max_tokens": 1024,
         "temperature": 0.7
     }
     try:
-        response = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=20)
+        response = requests.post(OPENROUTER_API_URL, headers=headers, json=payload, timeout=60)
         if response.status_code == 200:
             data = response.json()
             return data["choices"][0]["message"]["content"].strip()
@@ -52,7 +57,19 @@ def index():
 def chat():
     data = request.get_json()
     question = data.get("question", "")
-    answer = ask_llm(question)
+    user_api_key = data.get("api_key", "")
+    user_model = data.get("model", "")
+    image_data = data.get("image", None)
+    file_context = data.get("file_context", None)  # text/code file content
+    
+    # If file context provided, prepend it to the question
+    if file_context:
+        file_name = data.get("file_name", "file")
+        full_question = f"Here is the content of {file_name}:\n\n```\n{file_context}\n```\n\n{question if question else 'Analyze this file.'}"
+    else:
+        full_question = question
+    
+    answer = ask_llm(full_question, api_key=user_api_key, model=user_model, image_data=image_data)
     return jsonify({"answer": answer})
 
 @app.route("/ping")
@@ -60,4 +77,5 @@ def ping():
     return jsonify({"ok": True})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # debug=False for production security (prevents RCE via debugger)
+    app.run(host="0.0.0.0", port=5000, debug=False)
