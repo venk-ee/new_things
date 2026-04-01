@@ -29,7 +29,7 @@ FashionBot is a smart, AI-driven style assistant built with **FastAPI** and **Op
 
 1. **Clone the repository**:
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/venk-ee/new_chatt
    cd chatttt
    ```
 
