@@ -79,4 +79,3 @@ python test_bot.py
 - `GET /health`: Simple health check for the server.
 
 ---
-*Built with love for fashion lovers.*
