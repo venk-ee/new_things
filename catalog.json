@@ -1,0 +1,18 @@
+[
+    {
+        "id": 1,
+        "item": "Saree",
+        "style": "Silk",
+        "color": "Red",
+        "event": "Wedding",
+        "match_idea": "Gold zari blouse"
+    },
+    {
+        "id": 2,
+        "item": "Saree",
+        "style": "Cotton",
+        "color": "Blue",
+        "event": "Casual",
+        "match_idea": "Silver sleeveless blouse"
+    }
+]
