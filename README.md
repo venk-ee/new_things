@@ -13,7 +13,7 @@ FashionBot is a smart, AI-driven style assistant built with **FastAPI** and **Op
 ## Tech Stack
 
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/)
-- **LLM Provider**: [OpenRouter](https://openrouter.ai/) (Gemini Flash by default)
+- **LLM Provider**: [OpenRouter](https://openrouter.ai/) (default mifhtnot be correct)
 - **Asynchronous HTTP**: [httpx](https://www.python-httpx.org/)
 - **Configuration**: [python-dotenv](https://github.com/theskumar/python-dotenv)
 - **Frontend**: Vanilla HTML/CSS/JS  (copilot)
@@ -42,7 +42,7 @@ FashionBot is a smart, AI-driven style assistant built with **FastAPI** and **Op
    Create a `.env` file in the root directory and add your API key:
    ```env
    OPENROUTER_API_KEY=your_api_key_here
-   DEFAULT_MODEL=google/gemini-2.0-flash-lite-preview-02-05:free
+   DEFAULT_MODEL=nvidia/nemotron-3-super-120b-a12b:free
    OPENROUTER_API_URL=https://openrouter.ai/api/v1/chat/completions
    ```
 
