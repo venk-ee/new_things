@@ -178,3 +178,9 @@ const fetchdata=async () => {
 fetchdata();
 
 
+// Template Literals
+
+const name = "venkat";
+const age = 25;
+
+const greeting = `Hello, my name is ${name} and I am ${age} years old.`;
