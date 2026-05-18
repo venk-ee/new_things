@@ -1,34 +1,20 @@
 import { useState } from 'react'
 import './App.css'
 
-// component = function that returns jsx
 
-function Greeting({ name }) {
-  return (<div>
-    <h1>Hello my self {name}</h1>
-  </div>)
-}
 
 function App() {
-  const name = "venkat"
-  // let showgreeting=false
- //rather than flage  use  state
-  const[showgreeting,setshowgreeting]=useState(false)
-  const handleClick = () => {
-    // alert("hi")
-    if(showgreeting){
-      setshowgreeting(false)
-    }
-    else
-    {
-      setshowgreeting(true)
-    }
+
+  const[name,setname]=useState('')
+
+  function handlechange(event){
+    const value=event.target.value;
+    setname(value);
   }
 
   return (
     <div>
-      <button onClick={handleClick}>Toggle greeating</button>
-      {showgreeting && <Greeting name={name}/>}
+      <input type="text" placeholder='name...' onChange={handlechange}/>
       
     </div>
   )
