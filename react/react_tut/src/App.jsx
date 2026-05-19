@@ -1,31 +1,28 @@
 import { useState } from 'react'
 import './App.css'
+import {Link, Route, Routes} from 'react-router-dom'
 
-function TodoList (){
-  const todos=[
-    {id:1,text:"learn react"},
-    {id:2,text:"understand props"},
-    {id:3,text:"master states & events"}
-  ]
 
+function Home() {
   return (
     <div>
-    <h2>My To Do List</h2>
-    <ul>
-      {todos.map((todo)=>
-        <li key={todo.id}>{todo.text}</li>
-      
-    )}
-
-    </ul>
+      <h1>Home</h1>
     </div>
   )
 }
 
+
 function App() {
-  return(
+  return (
     <div>
-    <TodoList/>
+      <nav>
+        <Link to="/">Home</Link>
+      </nav>
+
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="*" element={<h1>404 Not Found</h1>}/>
+      </Routes>
     </div>
   )
 
