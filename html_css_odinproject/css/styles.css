@@ -1,0 +1,26 @@
+.alert-text {
+  color: blue;
+}
+
+#title {
+  background-color: red;
+}
+
+.box.highlight {
+  background-color: yellow;
+  border: 2px solid orange;
+}
+
+.container .special-text {
+  color: blue;
+  font-size: 24px;
+}
+
+.subsection {
+  color: blue;
+}
+
+/* rule 2 */
+.main .list {
+  color: red;
+}
