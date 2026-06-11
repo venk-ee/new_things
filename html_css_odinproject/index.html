@@ -9,6 +9,44 @@
 
 <body>
     <script src="./javascript.js"></script>
+    <table>
+        <tr>
+            <th>heading1</th>
+            <th>heading2</th>
+            <th>heading3</th>
+        </tr>
+        <tr>
+            <td>content1</td>
+            <td>content2</td>
+            <td>content3</td>
+        </tr>
+        <tr>
+            <td>content1</td>
+            <td>content2</td>
+            <td>content3</td>
+        </tr>
+
+
+    </table>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        .emojify::before {
+            content: '😎 😄 🤓 ';
+        }
+
+        .emojify::after {
+            content: ' 🤓 😄 😎';
+        }
+    </style>
+
+    <div> Let's <span class="emojify">emojify</span> this span! </div>
+
+
 </body>
 
 </html>
