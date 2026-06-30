@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>VChat — Your Serene AI Companion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="VChat — A beautifully crafted, mindful AI chat experience" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="zen-bg">
+        <!-- Decorative circles -->
+        <div class="enso enso-1"></div>
+        <div class="enso enso-2"></div>
+        <div class="enso enso-3"></div>
+        <!-- Subtle grain texture -->
+        <div class="grain-overlay"></div>
+        <!-- Water ripple at bottom -->
+        <svg class="water-wave" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path class="wave-path wave-1" d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" />
+            <path class="wave-path wave-2"
+                d="M0,80 C240,20 480,100 720,40 C960,100 1200,20 1440,80 L1440,120 L0,120 Z" />
+        </svg>
+        <!-- Floating particles -->
+        <div class="leaf leaf-1">✦</div>
+        <div class="leaf leaf-2">✧</div>
+        <div class="leaf leaf-3">✦</div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="new-chat-btn" id="newChatBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 5v14M5 12h14" />
+                </svg>
+                <span>New Conversation</span>
+            </button>
+            <button class="sidebar-toggle" id="closeSidebar" title="Close sidebar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+        </div>
+        <div class="chat-list" id="chatList">
+            <div class="chat-list-label">Conversations</div>
+            <div class="empty-state" id="emptyState">Start a new conversation...</div>
+        </div>
+        <div class="sidebar-footer">
+            <div class="sidebar-brand">
+                <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="1.5">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                <span class="brand-name">VChat</span>
+            </div>
+            <button class="settings-btn" id="settingsBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3" />
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                <span>Settings</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="top-bar">
+            <button class="menu-btn" id="menuBtn">☰</button>
+            <div class="top-bar-title">VChat</div>
+        </div>
+
+        <div class="content">
+            <!-- Landing View -->
+            <div id="landingView" class="landing-view">
+                <div class="hero-content">
+                    <div class="zen-symbol-wrap">
+                        <div class="enso-logo"></div>
+                        <svg class="hero-logo-icon" width="42" height="42" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            <path d="M8 9h8M8 13h5" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h1 class="hero-title">VChat</h1>
+                    <p class="hero-philosophy">"Think of AI not as a replacement for thought,<br>but as a companion for
+                        deeper thinking."</p>
+                    <p class="hero-subtitle">A thoughtful space for AI-powered conversations.<br>Ask, explore, and
+                        discover clarity.</p>
+
+                    <!-- Divider -->
+                    <div class="zen-divider">
+                        <span class="zen-dot"></span>
+                        <span class="zen-line"></span>
+                        <span class="zen-divider-icon">✦</span>
+                        <span class="zen-line"></span>
+                        <span class="zen-dot"></span>
+                    </div>
+
+                    <!-- Feature Cards -->
+                    <div class="zen-features">
+                        <div class="zen-feature-card">
+                            <div class="feature-icon">🧠</div>
+                            <div class="feature-title">Multi-Model</div>
+                            <div class="feature-desc">GPT-4, Claude, Gemini & 60+ free models</div>
+                        </div>
+                        <div class="zen-feature-card">
+                            <div class="feature-icon">🔐</div>
+                            <div class="feature-title">Encrypted</div>
+                            <div class="feature-desc">AES-encrypted chats stored only on your device</div>
+                        </div>
+                        <div class="zen-feature-card">
+                            <div class="feature-icon">🎙️</div>
+                            <div class="feature-title">Voice Input</div>
+                            <div class="feature-desc">Speak naturally — your words become queries</div>
+                        </div>
+                        <div class="zen-feature-card">
+                            <div class="feature-icon">📎</div>
+                            <div class="feature-title">File Analysis</div>
+                            <div class="feature-desc">Upload files, images & PDFs for analysis</div>
+                        </div>
+                    </div>
+
+                    <div class="hero-cta">
+                        <button id="heroStartBtn" class="hero-btn primary"
+                            onclick="document.getElementById('questionInput').focus()">
+                            Start Chatting
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                        <a href="https://github.com/venk-ee" target="_blank" class="hero-btn secondary">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            View Source
+                        </a>
+                    </div>
+                </div>
+
+                <div id="apiWarning" class="api-warning">
+                    <span>🔑</span>
+                    <span>API key not configured. <a id="openSettingsLink">Set your key</a> to begin.</span>
+                </div>
+
+                <p class="footer-text">
+                    VChat · Crafted with care · <a href="https://github.com/venk-ee">@venk-ee</a>
+                </p>
+            </div>
+
+            <!-- Chat View -->
+            <div id="chatView" class="chat-view">
+                <div id="messages" class="messages"></div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="input-area">
+                <div id="filePreview" class="file-preview"></div>
+                <div class="input-wrapper">
+                    <button id="modelBtn" class="model-btn" title="Select model">
+                        <span id="currentModelName">GPT-3.5</span>
+                        <span>▾</span>
+                    </button>
+                    <button id="attachBtn" class="attach-btn" title="Attach file">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path
+                                d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg>
+                    </button>
+                    <input type="file" id="fileInput" hidden
+                        accept=".txt,.md,.py,.js,.html,.css,.json,.csv,.sh,.xml,.yml,.yaml,.c,.cpp,.h,.java,.go,.rs,.php,.rb,.sql,.pdf,image/*">
+                    <textarea id="questionInput" class="text-input" rows="1"
+                        placeholder="Ask me anything..."></textarea>
+                    <div class="input-buttons">
+                        <button id="voiceBtn" class="voice-btn" title="Voice input">
+                            <svg class="mic-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="1" width="6" height="11" rx="3" />
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                                <line x1="12" y1="19" x2="12" y2="23" />
+                                <line x1="8" y1="23" x2="16" y2="23" />
+                            </svg>
+                        </button>
+                        <button id="sendBtn" class="send-btn" title="Send message" disabled>
+                            <svg class="send-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button id="closeSettingsModal" class="icon-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <div class="settings-section-title">API Configuration</div>
+                    <div class="form-group">
+                        <label for="apiKeyInput">OpenRouter API Key</label>
+                        <input type="password" id="apiKeyInput" class="form-input" placeholder="sk-or-v1-...">
+                        <p class="hint">Get at <a href="https://openrouter.ai/keys"
+                                target="_blank">openrouter.ai/keys</a></p>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-section-title">Data</div>
+                    <div class="form-group">
+                        <p class="hint" style="margin-bottom: 12px;">Chats are encrypted on this device.</p>
+                        <button id="clearAllChatsBtn" class="btn danger" style="width: 100%;">Clear All
+                            Conversations</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="clearKeyBtn" class="btn">Clear Key</button>
+                <button id="saveKeyBtn" class="btn primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Model Selector Modal -->
+    <div id="modelModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Select Model</h2>
+                <button id="closeModelModal" class="icon-btn">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="modelSearch" class="model-search" placeholder="Search models...">
+                <div id="modelList" class="model-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+
+</html>
