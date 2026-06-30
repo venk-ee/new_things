@@ -1,0 +1,15 @@
+ros2 launch slam_toolbox online_async_launch.py params_file:=./src/my_robot/config/mapper_params_online_async.yaml use_sim_time:=true
+
+~/dev_ws/src$ ros2 run nav2_map_server map_server --ros-args -p yaml_filename:=/home/mom/dev_ws/sr
+c/my_robot/nav2map/my_map_save.yaml -p use_sim_time:=true
+
+~/dev_ws/src$ ros2 run nav2_util lifecycle_bringup map_server
+
+~/dev_ws$ ros2 run nav2_amcl amcl --ros-args -p use_sim_time:=true
+
+
+mom@lol:~/dev_ws$ ros2 launch nav2_bringup navigation_launch.py use_sim_time:=true
+
+
+
+sudo apt install ros-humble-twist-mux #this is for the nav (remap to /diff_count/cmd_vel_unstamped) from(/cmd_vel_out)
